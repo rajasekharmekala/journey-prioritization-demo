@@ -1,0 +1,12 @@
+# Ignore everything.
+*
+
+# Except the following.
+!**/
+!**/*.jsx
+!**/*.js
+!**/*.ts
+!**/*.tsx
+!**/*.md
+!**/*.mjs
+!**/*.json

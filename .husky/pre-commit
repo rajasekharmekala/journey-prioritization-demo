@@ -1,0 +1,4 @@
+# Set concurrent to false to avoid race condition of
+# eslint --fix and prettier --write
+
+pnpm --silent dlx lint-staged --concurrent false
