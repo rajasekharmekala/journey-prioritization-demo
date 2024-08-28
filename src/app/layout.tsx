@@ -8,6 +8,7 @@ import './globals.css';
 
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -75,6 +76,7 @@ export default async function RootLayout({
         >
           {children}
           <Toaster />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
