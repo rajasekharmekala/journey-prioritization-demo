@@ -8,7 +8,6 @@ import './globals.css';
 
 import localFont from 'next/font/local';
 import Script from 'next/script';
-import { CookiesProvider } from 'react-cookie';
 
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
