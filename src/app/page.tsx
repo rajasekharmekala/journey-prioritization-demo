@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { track } from '@vercel/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -48,6 +49,8 @@ export default function Page() {
 
     // @ts-ignore
     await alloy('sendEvent', { xdm });
+
+    track('View Product');
     sendToast(toast, 'View Product', 'View product event has been sent');
   }
 
@@ -74,6 +77,8 @@ export default function Page() {
 
     // @ts-ignore
     await alloy('sendEvent', { xdm });
+
+    track('Add to Cart');
     sendToast(toast, 'Add to Cart', 'Add to cart event has been sent');
   }
 
@@ -100,6 +105,8 @@ export default function Page() {
 
     // @ts-ignore
     await alloy('sendEvent', { xdm });
+
+    track('Checkout');
     sendToast(toast, 'Checkout', 'Checkout event has been sent');
   }
 
@@ -108,6 +115,8 @@ export default function Page() {
     const result = await alloy('getIdentity', {
       namespaces: ['ECID'],
     });
+
+    track('Show ECID');
     sendToast(toast, 'ECID', result.identity.ECID);
   }
 
