@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { track } from '@vercel/analytics';
 
 import { Button } from '@/components/ui/button';
@@ -110,17 +110,17 @@ export default function Page() {
     sendToast(toast, 'Checkout', 'Checkout event has been sent');
   }
 
-  async function showECIDClickHandler() {
+  const [email, setEmail] = useState('');
+  const [ecid, setEcid] = useState('');
+
+  useEffect(async () => {
     // @ts-ignore
     const result = await alloy('getIdentity', {
       namespaces: ['ECID'],
     });
+    setEcid(result.identity.ECID);
+  }, [setEcid]);
 
-    track('Show ECID');
-    sendToast(toast, 'ECID', result.identity.ECID);
-  }
-
-  const [email, setEmail] = React.useState('');
   return (
     <main className="min-h-screen flex flex-col">
       <div className="p-4 gap-4">
@@ -132,6 +132,7 @@ export default function Page() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+        <div className="m-4">ECID: {ecid}</div>
         <div className="m-4">
           <Button onClick={() => viewProductClickHandler(email)}>
             View Product
@@ -144,9 +145,6 @@ export default function Page() {
         </div>
         <div className="m-4">
           <Button onClick={() => checkoutClickHandler(email)}>Checkout</Button>
-        </div>
-        <div className="m-4">
-          <Button onClick={() => showECIDClickHandler()}>Show ECID</Button>
         </div>
       </div>
     </main>
