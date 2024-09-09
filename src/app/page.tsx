@@ -113,12 +113,13 @@ export default function Page() {
   const [email, setEmail] = useState('');
   const [ecid, setEcid] = useState('');
 
-  useEffect(async () => {
+  useEffect(() => {
     // @ts-ignore
-    const result = await alloy('getIdentity', {
+    alloy('getIdentity', {
       namespaces: ['ECID'],
+    }).then((result: any) => {
+      setEcid(result.identity.ECID);
     });
-    setEcid(result.identity.ECID);
   }, [setEcid]);
 
   return (
