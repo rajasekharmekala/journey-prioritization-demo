@@ -48,30 +48,30 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <Script id="config-alloy">
         {`
-        !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||
-        []).push(o),n[o]=function(){var u=arguments;return new Promise(
-        function(i,l){n.setTimeout(function(){n[o].q.push([i,l,u])})})},n[o].q=[])})}
-        (window,["alloy"]);
-        const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
-        const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
-        const debugEnabled = true;
-        const clickCollectionEnabled = false;
-        const alloyOption = { 
-          datastreamId, 
-          orgId, 
-          debugEnabled,
-          clickCollectionEnabled,
-        };
-        alloy('configure', alloyOption).then(() => {
-          alloy('sendEvent', { renderDecisions: true }).then(() => {
-            alloy('sendEvent', {
-              personalization: {
-                surfaces: ['#home', '#foo', '#bar', '#foobar'],
-              },
+          !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||
+          []).push(o),n[o]=function(){var u=arguments;return new Promise(
+          function(i,l){n.setTimeout(function(){n[o].q.push([i,l,u])})})},n[o].q=[])})}
+          (window,["alloy"]);
+          const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
+          const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
+          const debugEnabled = true;
+          const clickCollectionEnabled = false;
+          const alloyOption = { 
+            datastreamId, 
+            orgId, 
+            debugEnabled,
+            clickCollectionEnabled,
+          };
+          alloy('configure', alloyOption).then(() => {
+            alloy('sendEvent', { renderDecisions: true }).then(() => {
+              alloy('sendEvent', {
+                personalization: {
+                  surfaces: ['#home', '#foo', '#bar', '#foobar'],
+                },
+              });
             });
           });
-        });
-      `}
+        `}
       </Script>
       <Script
         src={'https://cdn1.adoberesources.net/alloy/2.21.1/alloy.min.js'}
