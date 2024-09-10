@@ -62,7 +62,15 @@ export default async function RootLayout({
           debugEnabled,
           clickCollectionEnabled,
         };
-        alloy('configure', alloyOption);
+        alloy('configure', alloyOption).then(() => {
+          alloy('sendEvent', { renderDecisions: true }).then(() => {
+            alloy('sendEvent', {
+              personalization: {
+                surfaces: ['#home', '#foo', '#bar', '#foobar'],
+              },
+            });
+          });
+        });
       `}
       </Script>
       <Script
