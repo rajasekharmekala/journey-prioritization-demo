@@ -12,7 +12,9 @@ function mergeIdentity(xdm: any, email: string) {
     return {
       ...xdm,
       identityMap: {
-        Email: [{ id: email, primary: true }],
+        Email: [
+          { id: email, primary: true, authenticatedState: 'authenticated' },
+        ],
       },
     };
   }
