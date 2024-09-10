@@ -36,6 +36,13 @@ export default async function RootLayout({
 }>) {
   // Datastream URL
   // https://experience.adobe.com/#/@cjmprodnld2/sname:prod/data-collection/scramjet/1d48eeb6-e7ff-4490-902f-8ba0954a1a70/
+  // const datastreamId = '1d48eeb6-e7ff-4490-902f-8ba0954a1a70';
+  // const orgId = '4DA0571C5FDC4BF70A495FC2@AdobeOrg';
+
+  // Datastream URL
+  // https://experience.adobe.com/#/@aemonacpprodcampaign/sname:prod/data-collection/scramjet/65930925-1d0b-407e-8a86-65b60ec2e68c/
+  // const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
+  // const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -45,8 +52,8 @@ export default async function RootLayout({
         []).push(o),n[o]=function(){var u=arguments;return new Promise(
         function(i,l){n.setTimeout(function(){n[o].q.push([i,l,u])})})},n[o].q=[])})}
         (window,["alloy"]);
-        const datastreamId = '1d48eeb6-e7ff-4490-902f-8ba0954a1a70';
-        const orgId = '4DA0571C5FDC4BF70A495FC2@AdobeOrg';
+        const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
+        const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
         const debugEnabled = true;
         const clickCollectionEnabled = false;
         const alloyOption = { 
