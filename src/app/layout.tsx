@@ -55,11 +55,13 @@ export default async function RootLayout({
           const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
           const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
           const debugEnabled = true;
+          const thirdPartyCookiesEnabled = false;
           const clickCollectionEnabled = false;
           const alloyOption = { 
             datastreamId, 
             orgId, 
             debugEnabled,
+            thirdPartyCookiesEnabled,
             clickCollectionEnabled,
           };
           alloy('configure', alloyOption).then(() => {
