@@ -98,31 +98,34 @@ export default function Page() {
   const [cbeResponse, setCbeResponse] = useState('');
 
   const viewProductClickHandler = useCallback(async () => {
+    setCbeResponse('');
     const payload = mergePayload(viewProductPayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     // @ts-ignore
     await alloy('sendEvent', payload);
     track('View Product');
     sendToast(toast, 'View Product', 'View product event has been sent');
-  }, [toast, cookies.email]);
+  }, [toast, cookies.email, setCbeResponse]);
 
   const addToCartClickHandler = useCallback(async () => {
+    setCbeResponse('');
     const payload = mergePayload(addToCartPayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     // @ts-ignore
     await alloy('sendEvent', payload);
     track('Add to Cart');
     sendToast(toast, 'Add to Cart', 'Add to cart event has been sent');
-  }, [toast, cookies.email]);
+  }, [toast, cookies.email, setCbeResponse]);
 
   const checkoutClickHandler = useCallback(async () => {
+    setCbeResponse('');
     const payload = mergePayload(checkoutPayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     // @ts-ignore
     await alloy('sendEvent', payload);
     track('Checkout');
     sendToast(toast, 'Checkout', 'Checkout event has been sent');
-  }, [toast, cookies.email]);
+  }, [toast, cookies.email, setCbeResponse]);
 
   const showCbeClickHandler = useCallback(async () => {
     const payload = mergePayload(cbePayload, cookies.email);
@@ -134,7 +137,7 @@ export default function Page() {
     // @ts-ignore
     const response = await alloy('sendEvent', payload);
     setCbeResponse(JSON.stringify(response, undefined, 4));
-  }, [toast, cookies.email]);
+  }, [toast, cookies.email, setCbeResponse]);
 
   useEffect(() => {
     // @ts-ignore
