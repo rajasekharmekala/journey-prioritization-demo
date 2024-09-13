@@ -65,18 +65,12 @@ export default async function RootLayout({
             clickCollectionEnabled,
           };
           alloy('configure', alloyOption).then(() => {
-            alloy('sendEvent', { renderDecisions: true }).then(() => {
-              alloy('sendEvent', {
-                personalization: {
-                  surfaces: ['#home', '#foo', '#bar', '#foobar'],
-                },
-              });
-            });
+            alloy('sendEvent', { renderDecisions: true });
           });
         `}
       </Script>
       <Script
-        src={'https://cdn1.adoberesources.net/alloy/2.21.1/alloy.min.js'}
+        src={'https://cdn1.adoberesources.net/alloy/2.22.0/alloy.min.js'}
       ></Script>
       <body
         className={cn(
