@@ -127,10 +127,13 @@ export default function Page() {
   const showCbeClickHandler = useCallback(async () => {
     const payload = mergePayload(cbePayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    // @ts-ignore
-    await alloy('sendEvent', payload);
+
     track('CBE');
     sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
+
+    // @ts-ignore
+    const response = await alloy('sendEvent', payload);
+    setCbeResponse(JSON.stringify(response, undefined, 4));
   }, [toast, cookies.email]);
 
   useEffect(() => {
