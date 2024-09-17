@@ -64,9 +64,7 @@ export default async function RootLayout({
             thirdPartyCookiesEnabled,
             clickCollectionEnabled,
           };
-          alloy('configure', alloyOption).then(() => {
-            alloy('sendEvent', { renderDecisions: true });
-          });
+          alloy('configure', alloyOption);
         `}
       </Script>
       <Script

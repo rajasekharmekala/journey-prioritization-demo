@@ -62,7 +62,7 @@ const checkoutPayload = {
   },
 };
 
-const cbePayload = {
+const personalizationPayload = {
   personalization: {
     surfaces: ['#home', '#foo', '#bar', '#foobar'],
   },
@@ -129,8 +129,8 @@ export default function Page() {
     sendToast(toast, 'Checkout', 'Checkout event has been sent');
   }, [toast, cookies.email, setResponse]);
 
-  const cbeClickHandler = useCallback(async () => {
-    const payload = mergePayload(cbePayload, cookies.email);
+  const personalizationClickHandler = useCallback(async () => {
+    const payload = mergePayload(personalizationPayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     track('CBE');
     sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
@@ -170,7 +170,9 @@ export default function Page() {
           <Button onClick={checkoutClickHandler}>Checkout</Button>
         </div>
         <div className="m-4">
-          <Button onClick={cbeClickHandler}>Show CBE</Button>
+          <Button onClick={personalizationClickHandler}>
+            Show CBE or Content Card
+          </Button>
         </div>
         <div className="m-4">
           <div>Response:</div>
