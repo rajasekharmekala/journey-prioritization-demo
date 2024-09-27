@@ -137,6 +137,28 @@ export default function Page() {
     // @ts-ignore
     const res = await alloy('sendEvent', payload);
     setResponse(JSON.stringify(res, undefined, 4));
+    if (!res.propositions || res.propositions.length === 0) {
+      return;
+    }
+
+    // @ts-ignore
+    await alloy('sendEvent', {
+      xdm: {
+        eventType: 'decisioning.propositionDisplay',
+        _experience: {
+          decisioning: {
+            propositionEventType: {
+              display: 1,
+            },
+            propositions: res.propositions.map((p: any) => ({
+              id: p.id,
+              scope: p.scope,
+              scopeDetails: p.scopeDetails,
+            })),
+          },
+        },
+      },
+    });
   }, [toast, cookies.email, setResponse]);
 
   useEffect(() => {

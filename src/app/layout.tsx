@@ -34,12 +34,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Datastream URL
-  // https://experience.adobe.com/#/@cjmprodnld2/sname:prod/data-collection/scramjet/1d48eeb6-e7ff-4490-902f-8ba0954a1a70/
-  // const datastreamId = '1d48eeb6-e7ff-4490-902f-8ba0954a1a70';
-  // const orgId = '4DA0571C5FDC4BF70A495FC2@AdobeOrg';
-
-  // Datastream URL
+  // Current Datastream URL
   // https://experience.adobe.com/#/@aemonacpprodcampaign/sname:prod/data-collection/scramjet/65930925-1d0b-407e-8a86-65b60ec2e68c/
   // const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
   // const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
