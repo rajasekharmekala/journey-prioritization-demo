@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { track } from '@vercel/analytics';
 import { useCookies } from 'react-cookie';
 
 import { Button } from '@/components/ui/button';
@@ -103,7 +102,6 @@ export default function Page() {
     // @ts-ignore
     const res = await alloy('sendEvent', payload);
     setResponse(JSON.stringify(res, undefined, 4));
-    track('View Product');
     sendToast(toast, 'View Product', 'View product event has been sent');
   }, [toast, cookies.email, setResponse]);
 
@@ -114,7 +112,6 @@ export default function Page() {
     // @ts-ignore
     const res = await alloy('sendEvent', payload);
     setResponse(JSON.stringify(res, undefined, 4));
-    track('Add to Cart');
     sendToast(toast, 'Add to Cart', 'Add to cart event has been sent');
   }, [toast, cookies.email, setResponse]);
 
@@ -125,14 +122,12 @@ export default function Page() {
     // @ts-ignore
     const res = await alloy('sendEvent', payload);
     setResponse(JSON.stringify(res, undefined, 4));
-    track('Checkout');
     sendToast(toast, 'Checkout', 'Checkout event has been sent');
   }, [toast, cookies.email, setResponse]);
 
   const personalizationClickHandler = useCallback(async () => {
     const payload = mergePayload(personalizationPayload, cookies.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    track('CBE');
     sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
     // @ts-ignore
     const res = await alloy('sendEvent', payload);
