@@ -95,12 +95,7 @@ const OFFERS = [
 
 const personalizationPayload: XDMPayload = {
   personalization: {
-    surfaces: [
-      'web://journey-sample-app.vercel.app/#home',
-      'web://journey-sample-app.vercel.app/#foo',
-      'web://journey-sample-app.vercel.app/#bar',
-      'web://journey-sample-app.vercel.app/#foobar',
-    ],
+    surfaces: ['#home', '#foo', '#bar', '#foobar'],
   },
 };
 
