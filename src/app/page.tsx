@@ -319,7 +319,7 @@ export default function Page() {
       const offerItems = personalizationDecisions
         .map((decision: any) => decision.items)
         .flat()
-        .map((i) => i?.data?.content);
+        .map((i: any) => i?.data?.content);
 
       if (offerItems.length === 0) {
         setOffers(OFFERS);
