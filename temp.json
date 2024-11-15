@@ -1,0 +1,54 @@
+{
+  "requestId": "08019125-fa7a-4dcf-8025-6783074dd0ea",
+  "handle": [
+    {
+      "payload": [
+        {
+          "id": "77673664162535368243104050362976643059",
+          "namespace": {
+            "code": "ECID"
+          }
+        }
+      ],
+      "type": "identity:result"
+    },
+    {
+      "payload": [],
+      "type": "personalization:decisions",
+      "eventIndex": 0
+    },
+    {
+      "payload": [
+        {
+          "scope": "Target",
+          "hint": "35",
+          "ttlSeconds": 1800
+        },
+        {
+          "scope": "AAM",
+          "hint": "9",
+          "ttlSeconds": 1800
+        },
+        {
+          "scope": "EdgeNetwork",
+          "hint": "or2",
+          "ttlSeconds": 1800
+        }
+      ],
+      "type": "locationHint:result"
+    },
+    {
+      "payload": [
+        {
+          "key": "kndctr_906E3A095DC834230A495FD6_AdobeOrg_cluster",
+          "value": "or2",
+          "maxAge": 1800,
+          "attrs": {
+            "SameSite": "None"
+          }
+        }
+      ],
+      "type": "state:store"
+    }
+  ]
+}

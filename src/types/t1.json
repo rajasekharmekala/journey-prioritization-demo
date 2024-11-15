@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "configOverrides": {},
+    "state": {
+      "domain": "journey-prioritization-demo.vercel.app",
+      "cookiesEnabled": true,
+      "entries": [
+        {
+          "key": "kndctr_906E3A095DC834230A495FD6_AdobeOrg_identity",
+          "value": "CiY3NzY3MzY2NDE2MjUzNTM2ODI0MzEwNDA1MDM2Mjk3NjY0MzA1OVISCKuYiomzMhABGAEqA09SMjAA8AGrmIqJszI="
+        },
+        {
+          "key": "kndctr_906E3A095DC834230A495FD6_AdobeOrg_cluster",
+          "value": "or2"
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "query": {
+        "personalization": {
+          "schemas": [
+            "https://ns.adobe.com/personalization/default-content-item",
+            "https://ns.adobe.com/personalization/html-content-item",
+            "https://ns.adobe.com/personalization/json-content-item",
+            "https://ns.adobe.com/personalization/redirect-item",
+            "https://ns.adobe.com/personalization/ruleset-item",
+            "https://ns.adobe.com/personalization/message/in-app",
+            "https://ns.adobe.com/personalization/message/content-card"
+          ],
+          "decisionScopes": [],
+          "surfaces": [
+            "web://journey-prioritization-demo.vercel.app/#home",
+            "web://journey-prioritization-demo.vercel.app/#foo",
+            "web://journey-prioritization-demo.vercel.app/#bar",
+            "web://journey-prioritization-demo.vercel.app/#foobar"
+          ]
+        }
+      },
+      "xdm": {
+        "web": {
+          "webPageDetails": {
+            "URL": "https://journey-prioritization-demo.vercel.app/"
+          },
+          "webReferrer": { "URL": "" }
+        },
+        "device": {
+          "screenHeight": 1440,
+          "screenWidth": 2560,
+          "screenOrientation": "landscape"
+        },
+        "environment": {
+          "type": "browser",
+          "browserDetails": { "viewportWidth": 2560, "viewportHeight": 846 }
+        },
+        "placeContext": {
+          "localTimezoneOffset": 480,
+          "localTime": "2024-11-15T12:37:58.061-08:00"
+        },
+        "timestamp": "2024-11-15T20:37:58.061Z",
+        "implementationDetails": {
+          "name": "https://ns.adobe.com/experience/alloy",
+          "version": "2.22.0",
+          "environment": "browser"
+        },
+        "eventType": "",
+        "identityMap": {
+          "Email": [
+            {
+              "authenticatedState": "authenticated",
+              "id": "testview@adobe.com",
+              "primary": true
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "query": { "identity": { "fetch": ["ECID"] } }
+}

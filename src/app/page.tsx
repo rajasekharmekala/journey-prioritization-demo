@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import OfferCarousel from './offercarousel';
 
 const viewProductPayload: XDMPayload = {
   xdm: {
@@ -26,9 +27,80 @@ const viewProductPayload: XDMPayload = {
   },
 };
 
+const OFFERS = [
+  {
+    id: 'bf-001',
+    title: 'Premium Noise-Cancelling Headphones',
+    brand: 'SoundMax',
+    originalPrice: 299.99,
+    discountedPrice: 149.99,
+    discountPercentage: 50,
+    validUntil: '2024-11-24T23:59:59Z',
+    category: 'Electronics',
+    tags: ['Headphones', 'Audio', 'Wireless', 'Featured'],
+    thumbnailUrl:
+      'https://plus.unsplash.com/premium_photo-1678099940967-73fe30680949?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description:
+      'Experience premium sound quality with our top-rated noise-cancelling headphones. Features include 30-hour battery life, premium leather cushions, and advanced Bluetooth 5.0 connectivity.',
+    highlights: [
+      '50% Off - Biggest Discount of the Year',
+      'Free Premium Carrying Case',
+      '2-Year Extended Warranty Included',
+    ],
+    stockStatus: {
+      available: true,
+    },
+  },
+  {
+    id: 'bf-002',
+    title: '4K Smart TV 65-inch',
+    brand: 'VisionTech',
+    originalPrice: 999.99,
+    discountedPrice: 649.99,
+    discountPercentage: 35,
+    validUntil: '2024-11-24T23:59:59Z',
+    category: 'Electronics',
+    tags: ['TV', 'Smart Home', '4K', 'Featured'],
+    thumbnailUrl: 'https://example.com/images/tv-deal.jpg',
+    description:
+      'Immerse yourself in stunning 4K resolution with this 65-inch smart TV. Features HDR, built-in streaming apps, and voice control compatibility.',
+    highlights: ['Save $350', 'Free Wall Mount Kit', 'Free Installation'],
+    stockStatus: {
+      available: true,
+    },
+  },
+  {
+    id: 'bf-003',
+    title: 'Gaming Laptop Pro',
+    brand: 'TechPro',
+    originalPrice: 1499.99,
+    discountedPrice: 999.99,
+    discountPercentage: 33,
+    validUntil: '2024-11-24T23:59:59Z',
+    category: 'Computers',
+    tags: ['Gaming', 'Laptop', 'RTX 4060', 'Featured'],
+    thumbnailUrl: 'https://example.com/images/gaming-laptop-deal.jpg',
+    description:
+      'Ultimate gaming performance with RTX 4060, 16GB RAM, 1TB SSD, and a 165Hz display. Perfect for both gaming and content creation.',
+    highlights: [
+      'Save $500',
+      'Free Gaming Mouse',
+      '3-Year Accidental Damage Protection',
+    ],
+    stockStatus: {
+      available: true,
+    },
+  },
+];
+
 const personalizationPayload: XDMPayload = {
   personalization: {
-    surfaces: ['#home', '#foo', '#bar', '#foobar'],
+    surfaces: [
+      'web://journey-sample-app.vercel.app/#home',
+      'web://journey-sample-app.vercel.app/#foo',
+      'web://journey-sample-app.vercel.app/#bar',
+      'web://journey-sample-app.vercel.app/#foobar',
+    ],
   },
 };
 
@@ -63,6 +135,7 @@ export default function Page() {
   const [response, setResponse] = useState('');
   const [viewProductLoading, setViewProductLoading] = useState(false);
   const [cbeLoading, setCbeLoading] = useState(false);
+  const [offers, setOffers] = useState<any[]>(OFFERS);
 
   useEffect(() => {
     setCookieState({ email: cookies.email });
@@ -137,8 +210,18 @@ export default function Page() {
       const res = await alloy('sendEvent', payload);
       setResponse(JSON.stringify(res, undefined, 4));
       if (!res.propositions || res.propositions.length === 0) {
+        setOffers([]);
         return;
       }
+
+      // Extract offers from personalization decisions
+      const personalizationDecisions = res.handle?.find(
+        (h: any) => h.type === 'personalization:decisions'
+      );
+      const offerItems =
+        personalizationDecisions?.payload?.flatMap((p: any) => p.items || []) ||
+        [];
+      setOffers(offerItems);
 
       // @ts-ignore
       await alloy('sendEvent', {
@@ -202,14 +285,7 @@ export default function Page() {
           </Button>
         </div>
 
-        {response && (
-          <div className="rounded-lg bg-gray-50 p-4">
-            <div className="font-semibold mb-2">Response:</div>
-            <pre className="whitespace-pre-wrap overflow-auto max-h-96">
-              {response}
-            </pre>
-          </div>
-        )}
+        <OfferCarousel offers={offers} />
       </div>
     </main>
   );
