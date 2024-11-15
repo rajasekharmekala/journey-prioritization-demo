@@ -37,7 +37,8 @@ function mergePayload(payload: XDMPayload, email: string): XDMPayload {
     return {
       ...payload,
       xdm: {
-        ...(payload.xdm || {}),
+        eventType: payload.xdm?.eventType || '',
+        ...payload.xdm,
         identityMap: {
           Email: [
             { id: email, primary: true, authenticatedState: 'authenticated' },
@@ -73,6 +74,11 @@ export default function Page() {
     toastMessage: string,
     setLoading: (loading: boolean) => void
   ) => {
+    if (!cookieState.email?.trim()) {
+      sendToast(toast, 'Error', 'Please enter an email address first');
+      return;
+    }
+
     setLoading(true);
     try {
       // @ts-ignore - alloy is globally defined
@@ -101,6 +107,11 @@ export default function Page() {
   };
 
   const viewProductClickHandler = useCallback(async () => {
+    if (!cookieState.email?.trim()) {
+      sendToast(toast, 'Error', 'Please enter an email address first');
+      return;
+    }
+
     const payload = mergePayload(viewProductPayload, cookieState.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     await handleEvent(
@@ -112,6 +123,11 @@ export default function Page() {
   }, [toast, cookieState.email, setResponse]);
 
   const personalizationClickHandler = useCallback(async () => {
+    if (!cookieState.email?.trim()) {
+      sendToast(toast, 'Error', 'Please enter an email address first');
+      return;
+    }
+
     const payload = mergePayload(personalizationPayload, cookieState.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     setCbeLoading(true);
@@ -174,11 +190,14 @@ export default function Page() {
         <div className="flex gap-4">
           <Button
             onClick={viewProductClickHandler}
-            disabled={viewProductLoading}
+            disabled={viewProductLoading || !cookieState.email?.trim()}
           >
             {'View Product'}
           </Button>
-          <Button onClick={personalizationClickHandler} disabled={cbeLoading}>
+          <Button
+            onClick={personalizationClickHandler}
+            disabled={cbeLoading || !cookieState.email?.trim()}
+          >
             {'Show CBE or Content Card'}
           </Button>
         </div>
