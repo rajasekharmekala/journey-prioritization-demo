@@ -205,13 +205,10 @@ export default function Page() {
       setResponse(JSON.stringify(res, undefined, 4));
 
       // Extract offers from personalization decisions
-      const personalizationDecisions = res.handle?.find(
-        (h: any) => h.type === 'personalization:decisions'
-      );
-      const offerItems =
-        personalizationDecisions?.payload
-          ?.flatMap((p: any) => (p.items || []).map((i: any) => i.data.content))
-          .filter(Boolean) || [];
+      const personalizationDecisions = res.decisions || [];
+      const offerItems = personalizationDecisions
+        .map((decision: any) => decision.items)
+        .flat();
 
       if (offerItems.length === 0) {
         setOffers(OFFERS);
