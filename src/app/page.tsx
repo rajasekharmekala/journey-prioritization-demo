@@ -209,14 +209,11 @@ export default function Page() {
         (h: any) => h.type === 'personalization:decisions'
       );
       const offerItems =
-        personalizationDecisions?.payload?.flatMap((p: any) => p.items || []) ||
-        [];
+        personalizationDecisions?.payload
+          ?.flatMap((p: any) => (p.items || []).map((i: any) => i.data.content))
+          .filter(Boolean) || [];
 
-      if (
-        !res.propositions ||
-        res.propositions.length === 0 ||
-        offerItems.length === 0
-      ) {
+      if (offerItems.length === 0) {
         setOffers(OFFERS);
         setIsPersonalized(false);
         sendToast(
@@ -234,25 +231,6 @@ export default function Page() {
         'Your Personalized Black Friday Eve Offers',
         'Showing Black Friday Eve deals customized to your preferences and shopping history'
       );
-
-      // @ts-ignore
-      await alloy('sendEvent', {
-        xdm: {
-          eventType: 'decisioning.propositionDisplay',
-          _experience: {
-            decisioning: {
-              propositionEventType: {
-                display: 1,
-              },
-              propositions: res.propositions.map((p: any) => ({
-                id: p.id,
-                scope: p.scope,
-                scopeDetails: p.scopeDetails,
-              })),
-            },
-          },
-        },
-      });
     } finally {
       setCbeLoading(false);
     }
