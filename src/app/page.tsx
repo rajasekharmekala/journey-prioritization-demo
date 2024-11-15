@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { AlloyResponse, XDMPayload } from '@/types/payloads';
 import { useCookies } from 'react-cookie';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 
-const viewProductPayload = {
+const viewProductPayload: XDMPayload = {
   xdm: {
     eventType: 'commerce.productViews',
     commerce: {
@@ -25,49 +26,13 @@ const viewProductPayload = {
   },
 };
 
-const addToCartPayload = {
-  xdm: {
-    eventType: 'commerce.productListAdds',
-    commerce: {
-      productListAdds: {
-        value: 1,
-      },
-    },
-    productListItems: [
-      {
-        SKU: 'A222',
-        name: 'Conditioner',
-        quantity: 1,
-      },
-    ],
-  },
-};
-
-const checkoutPayload = {
-  xdm: {
-    eventType: 'commerce.checkouts',
-    commerce: {
-      checkouts: {
-        value: 1,
-      },
-    },
-    productListItems: [
-      {
-        SKU: 'A333',
-        name: 'Shampoo & Conditioner Set',
-        quantity: 1,
-      },
-    ],
-  },
-};
-
-const personalizationPayload = {
+const personalizationPayload: XDMPayload = {
   personalization: {
     surfaces: ['#home', '#foo', '#bar', '#foobar'],
   },
 };
 
-function mergePayload(payload: any, email: string) {
+function mergePayload(payload: XDMPayload, email: string): XDMPayload {
   if (!!email && email.length > 0) {
     return {
       ...payload,
@@ -89,112 +54,143 @@ function sendToast(toast: any, title: string, description: string) {
 }
 
 export default function Page() {
+  const [cookieState, setCookieState] = useState<{ email?: string }>({});
   const [cookies, setCookies, removeCookies] = useCookies(['email'], {
     doNotParse: true,
   });
   const { toast } = useToast();
-  const [ecid, setEcid] = useState('');
   const [response, setResponse] = useState('');
-
-  const viewProductClickHandler = useCallback(async () => {
-    const payload = mergePayload(viewProductPayload, cookies.email);
-    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    // @ts-ignore
-    const res = await alloy('sendEvent', payload);
-    setResponse(JSON.stringify(res, undefined, 4));
-    sendToast(toast, 'View Product', 'View product event has been sent');
-  }, [toast, cookies.email, setResponse]);
-
-  const addToCartClickHandler = useCallback(async () => {
-    setResponse('');
-    const payload = mergePayload(addToCartPayload, cookies.email);
-    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    // @ts-ignore
-    const res = await alloy('sendEvent', payload);
-    setResponse(JSON.stringify(res, undefined, 4));
-    sendToast(toast, 'Add to Cart', 'Add to cart event has been sent');
-  }, [toast, cookies.email, setResponse]);
-
-  const checkoutClickHandler = useCallback(async () => {
-    setResponse('');
-    const payload = mergePayload(checkoutPayload, cookies.email);
-    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    // @ts-ignore
-    const res = await alloy('sendEvent', payload);
-    setResponse(JSON.stringify(res, undefined, 4));
-    sendToast(toast, 'Checkout', 'Checkout event has been sent');
-  }, [toast, cookies.email, setResponse]);
-
-  const personalizationClickHandler = useCallback(async () => {
-    const payload = mergePayload(personalizationPayload, cookies.email);
-    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
-    sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
-    // @ts-ignore
-    const res = await alloy('sendEvent', payload);
-    setResponse(JSON.stringify(res, undefined, 4));
-    if (!res.propositions || res.propositions.length === 0) {
-      return;
-    }
-
-    // @ts-ignore
-    await alloy('sendEvent', {
-      xdm: {
-        eventType: 'decisioning.propositionDisplay',
-        _experience: {
-          decisioning: {
-            propositionEventType: {
-              display: 1,
-            },
-            propositions: res.propositions.map((p: any) => ({
-              id: p.id,
-              scope: p.scope,
-              scopeDetails: p.scopeDetails,
-            })),
-          },
-        },
-      },
-    });
-  }, [toast, cookies.email, setResponse]);
+  const [viewProductLoading, setViewProductLoading] = useState(false);
+  const [cbeLoading, setCbeLoading] = useState(false);
 
   useEffect(() => {
-    // @ts-ignore
-    alloy('getIdentity', {
-      namespaces: ['ECID'],
-    }).then((result: any) => {
-      setEcid(result.identity.ECID);
-    });
-  }, [setEcid]);
+    setCookieState({ email: cookies.email });
+  }, [cookies.email]);
+
+  const handleEvent = async (
+    payload: XDMPayload,
+    toastTitle: string,
+    toastMessage: string,
+    setLoading: (loading: boolean) => void
+  ) => {
+    setLoading(true);
+    try {
+      // @ts-ignore - alloy is globally defined
+      const alloyPromise = alloy('sendEvent', payload);
+      const res = await Promise.race([
+        alloyPromise,
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error('request timed out after 3 seconds')),
+            3000
+          )
+        ),
+      ]);
+      setResponse(JSON.stringify(res, undefined, 4));
+      sendToast(toast, toastTitle, toastMessage);
+      return res;
+    } catch (error) {
+      sendToast(
+        toast,
+        'Error',
+        error instanceof Error ? error.message : 'An error occurred'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const viewProductClickHandler = useCallback(async () => {
+    const payload = mergePayload(viewProductPayload, cookieState.email);
+    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
+    await handleEvent(
+      payload,
+      'View Product',
+      'View product event has been sent',
+      setViewProductLoading
+    );
+  }, [toast, cookieState.email, setResponse]);
+
+  const personalizationClickHandler = useCallback(async () => {
+    const payload = mergePayload(personalizationPayload, cookieState.email);
+    console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
+    setCbeLoading(true);
+    try {
+      sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
+      // @ts-ignore
+      const res = await alloy('sendEvent', payload);
+      setResponse(JSON.stringify(res, undefined, 4));
+      if (!res.propositions || res.propositions.length === 0) {
+        return;
+      }
+
+      // @ts-ignore
+      await alloy('sendEvent', {
+        xdm: {
+          eventType: 'decisioning.propositionDisplay',
+          _experience: {
+            decisioning: {
+              propositionEventType: {
+                display: 1,
+              },
+              propositions: res.propositions.map((p: any) => ({
+                id: p.id,
+                scope: p.scope,
+                scopeDetails: p.scopeDetails,
+              })),
+            },
+          },
+        },
+      });
+    } finally {
+      setCbeLoading(false);
+    }
+  }, [toast, cookieState.email, setResponse]);
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <div className="p-4 gap-4">
-        <div className="m-4">
+    <main className="min-h-screen flex flex-col max-w-4xl mx-auto p-8">
+      <div className="space-y-6">
+        <div className="flex gap-4 items-center">
           <Input
             type="email"
             placeholder="Enter an email address to simulate authenticated session"
-            value={cookies.email || ''}
+            value={cookieState.email || ''}
             onChange={(e) => setCookies('email', e.target.value)}
+            className="flex-1"
           />
+          {cookieState.email && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                removeCookies('email');
+                setCookieState({});
+              }}
+            >
+              Clear
+            </Button>
+          )}
         </div>
-        <div className="m-4">ECID: {ecid}</div>
-        <div className="m-4">
-          <Button onClick={viewProductClickHandler}>View Product</Button>
-        </div>
-        <div className="m-4">
-          <Button onClick={addToCartClickHandler}>Add to Cart</Button>
-        </div>
-        <div className="m-4">
-          <Button onClick={checkoutClickHandler}>Checkout</Button>
-        </div>
-        <div className="m-4">
-          <Button onClick={personalizationClickHandler}>
-            Show CBE or Content Card
+
+        <div className="flex gap-4">
+          <Button
+            onClick={viewProductClickHandler}
+            disabled={viewProductLoading}
+          >
+            {'View Product'}
+          </Button>
+          <Button onClick={personalizationClickHandler} disabled={cbeLoading}>
+            {'Show CBE or Content Card'}
           </Button>
         </div>
-        <div className="m-4">
-          <div>Response:</div>
-          <pre>{response}</pre>
-        </div>
+
+        {response && (
+          <div className="rounded-lg bg-gray-50 p-4">
+            <div className="font-semibold mb-2">Response:</div>
+            <pre className="whitespace-pre-wrap overflow-auto max-h-96">
+              {response}
+            </pre>
+          </div>
+        )}
       </div>
     </main>
   );
