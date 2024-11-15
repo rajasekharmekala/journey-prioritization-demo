@@ -29,64 +29,58 @@ const viewProductPayload: XDMPayload = {
 
 const OFFERS = [
   {
-    id: 'bf-001',
-    title: 'Premium Noise-Cancelling Headphones',
-    brand: 'SoundMax',
-    originalPrice: 299.99,
-    discountedPrice: 149.99,
-    discountPercentage: 50,
+    id: 'bf-006',
+    title: 'Plain Notebook',
+    brand: 'PaperCo',
+    originalPrice: 4.99,
+    discountedPrice: 4.49,
+    discountPercentage: 10,
     validUntil: '2024-11-24T23:59:59Z',
-    category: 'Electronics',
-    tags: ['Headphones', 'Audio', 'Wireless', 'Featured'],
+    category: 'Office Supplies',
+    tags: ['Stationery', 'Basic'],
     thumbnailUrl:
-      'https://plus.unsplash.com/premium_photo-1678099940967-73fe30680949?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?q=80&w=2573&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     description:
-      'Experience premium sound quality with our top-rated noise-cancelling headphones. Features include 30-hour battery life, premium leather cushions, and advanced Bluetooth 5.0 connectivity.',
-    highlights: [
-      '50% Off - Biggest Discount of the Year',
-      'Free Premium Carrying Case',
-      '2-Year Extended Warranty Included',
-    ],
+      'Just a regular spiral notebook with lined paper. 70 pages of basic paper.',
+    highlights: ['Save 50 cents', 'Lined paper', 'Metal spiral binding'],
     stockStatus: {
       available: true,
     },
   },
   {
-    id: 'bf-002',
-    title: '4K Smart TV 65-inch',
-    brand: 'VisionTech',
-    originalPrice: 999.99,
-    discountedPrice: 649.99,
-    discountPercentage: 35,
+    id: 'bf-004',
+    title: 'Basic Calculator',
+    brand: 'OfficeBasics',
+    originalPrice: 9.99,
+    discountedPrice: 8.99,
+    discountPercentage: 10,
+    validUntil: '2024-11-24T23:59:59Z',
+    category: 'Office Supplies',
+    tags: ['Calculator', 'Basic'],
+    thumbnailUrl:
+      'https://media.istockphoto.com/id/1781688768/photo/2024-on-the-calculator-screen-new-year-2024-on-the-calculator-display-with-copy-space.jpg?s=2048x2048&w=is&k=20&c=iOaU4tqlnVmnQInMSfJwlHUr2TN67Zq83a2xJOdQUTw=',
+    description:
+      'A simple solar-powered calculator for basic arithmetic. Features large buttons and an LCD display.',
+    highlights: ['Save $1', 'Solar Powered', 'Basic Math Functions'],
+    stockStatus: {
+      available: true,
+    },
+  },
+  {
+    id: 'bf-005',
+    title: 'Generic USB Cable',
+    brand: 'CableCore',
+    originalPrice: 7.99,
+    discountedPrice: 6.99,
+    discountPercentage: 12,
     validUntil: '2024-11-24T23:59:59Z',
     category: 'Electronics',
-    tags: ['TV', 'Smart Home', '4K', 'Featured'],
-    thumbnailUrl: 'https://example.com/images/tv-deal.jpg',
+    tags: ['Cable', 'USB'],
+    thumbnailUrl:
+      'https://media.istockphoto.com/id/114242778/photo/beige-usb-extender-cable-coiled-up.jpg?s=2048x2048&w=is&k=20&c=1zGNnWS0Kb6UbbNCSxTLdC3MRjE2x-8nUbPmkpbaPvw=',
     description:
-      'Immerse yourself in stunning 4K resolution with this 65-inch smart TV. Features HDR, built-in streaming apps, and voice control compatibility.',
-    highlights: ['Save $350', 'Free Wall Mount Kit', 'Free Installation'],
-    stockStatus: {
-      available: true,
-    },
-  },
-  {
-    id: 'bf-003',
-    title: 'Gaming Laptop Pro',
-    brand: 'TechPro',
-    originalPrice: 1499.99,
-    discountedPrice: 999.99,
-    discountPercentage: 33,
-    validUntil: '2024-11-24T23:59:59Z',
-    category: 'Computers',
-    tags: ['Gaming', 'Laptop', 'RTX 4060', 'Featured'],
-    thumbnailUrl: 'https://example.com/images/gaming-laptop-deal.jpg',
-    description:
-      'Ultimate gaming performance with RTX 4060, 16GB RAM, 1TB SSD, and a 165Hz display. Perfect for both gaming and content creation.',
-    highlights: [
-      'Save $500',
-      'Free Gaming Mouse',
-      '3-Year Accidental Damage Protection',
-    ],
+      "Standard USB-A to USB-C cable. Nothing special about it. It's just a cable.",
+    highlights: ['Save $1', '3-foot length', 'Basic data transfer'],
     stockStatus: {
       available: true,
     },
@@ -131,6 +125,7 @@ export default function Page() {
   const [viewProductLoading, setViewProductLoading] = useState(false);
   const [cbeLoading, setCbeLoading] = useState(false);
   const [offers, setOffers] = useState<any[]>(OFFERS);
+  const [isPersonalized, setIsPersonalized] = useState(false);
 
   useEffect(() => {
     setCookieState({ email: cookies.email });
@@ -184,8 +179,8 @@ export default function Page() {
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     await handleEvent(
       payload,
-      'View Product',
-      'View product event has been sent',
+      'Building Your Personalized Black Friday Eve Experience',
+      'We are customizing personalized Black Friday Eve offers based on your preferences. Please check back in a moment...',
       setViewProductLoading
     );
   }, [toast, cookieState.email, setResponse]);
@@ -200,14 +195,14 @@ export default function Page() {
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     setCbeLoading(true);
     try {
-      sendToast(toast, 'Code-based Experience', 'CBE request has been sent');
+      sendToast(
+        toast,
+        'Fetching Your Personalized Black Friday Eve Offers',
+        'We are curating Black Friday Eve deals based on your preferences. Please wait a moment...'
+      );
       // @ts-ignore
       const res = await alloy('sendEvent', payload);
       setResponse(JSON.stringify(res, undefined, 4));
-      if (!res.propositions || res.propositions.length === 0) {
-        setOffers([]);
-        return;
-      }
 
       // Extract offers from personalization decisions
       const personalizationDecisions = res.handle?.find(
@@ -216,7 +211,29 @@ export default function Page() {
       const offerItems =
         personalizationDecisions?.payload?.flatMap((p: any) => p.items || []) ||
         [];
+
+      if (
+        !res.propositions ||
+        res.propositions.length === 0 ||
+        offerItems.length === 0
+      ) {
+        setOffers(OFFERS);
+        setIsPersonalized(false);
+        sendToast(
+          toast,
+          '',
+          'We are still personalizing your Black Friday Eve experience... Meanwhile, here are our featured promotional offers'
+        );
+        return;
+      }
+
       setOffers(offerItems);
+      setIsPersonalized(true);
+      sendToast(
+        toast,
+        'Your Personalized Black Friday Eve Offers',
+        'Showing Black Friday Eve deals customized to your preferences and shopping history'
+      );
 
       // @ts-ignore
       await alloy('sendEvent', {
@@ -270,16 +287,34 @@ export default function Page() {
             onClick={viewProductClickHandler}
             disabled={viewProductLoading || !cookieState.email?.trim()}
           >
-            {'View Product'}
+            {'Build Personalized Black Friday Eve Offers'}
           </Button>
           <Button
             onClick={personalizationClickHandler}
             disabled={cbeLoading || !cookieState.email?.trim()}
           >
-            {'Show CBE or Content Card'}
+            {'Show My Personalized Black Friday Eve Deals'}
           </Button>
         </div>
 
+        {(isPersonalized || offers.length > 0) && (
+          <div
+            className={`
+            flex items-center justify-center gap-2 p-3 rounded-lg
+            ${
+              isPersonalized
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-gray-50 text-gray-700 border border-gray-200'
+            }
+          `}
+          >
+            <div className="text-sm font-medium">
+              {isPersonalized
+                ? '✨ Personalized Black Friday Eve deals tailored to your preferences'
+                : '📢 Preview our Black Friday Eve special offers'}
+            </div>
+          </div>
+        )}
         <OfferCarousel offers={offers} />
       </div>
     </main>
