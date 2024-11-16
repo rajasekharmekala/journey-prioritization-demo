@@ -207,6 +207,10 @@ export default function Page() {
 
       // Extract offers from personalization decisions
       const personalizationDecisions = res.decisions || [];
+      personalizationDecisions.sort(
+        (a: any, b: any) =>
+          (a.scopeDetails?.rank || 0) - (b.scopeDetails?.rank || 0)
+      );
       const offerItems = personalizationDecisions
         .map((decision: any) => decision.items)
         .flat()
