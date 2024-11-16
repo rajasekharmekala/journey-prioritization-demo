@@ -29,7 +29,7 @@ export default async function RootLayout({
 }>) {
   // Current Datastream URL
   // https://experience.adobe.com/#/@aemonacpprodcampaign/sname:prod/data-collection/scramjet/65930925-1d0b-407e-8a86-65b60ec2e68c/
-  // https://experience.adobe.com/#/@mobiledx/sname:prod/data-collection/scramjet/357f6c65-484f-43ec-867f-b82b0c67655a/
+  // https://experience.adobe.com/#/@mobiledx/sname:prod/data-collection/scramjet/1cdbf39c-bcd8-42fe-90ff-b9f4b183d02f/
   // const datastreamId = '65930925-1d0b-407e-8a86-65b60ec2e68c';
   // const orgId = '906E3A095DC834230A495FD6@AdobeOrg';
 
@@ -41,7 +41,7 @@ export default async function RootLayout({
           []).push(o),n[o]=function(){var u=arguments;return new Promise(
           function(i,l){n.setTimeout(function(){n[o].q.push([i,l,u])})})},n[o].q=[])})}
           (window,["alloy"]);
-          const datastreamId = '357f6c65-484f-43ec-867f-b82b0c67655a';
+          const datastreamId = '1cdbf39c-bcd8-42fe-90ff-b9f4b183d02f';
           const orgId = '692D3C645C5CDA980A495CB3@AdobeOrg';
           const debugEnabled = true;
           const thirdPartyCookiesEnabled = false;

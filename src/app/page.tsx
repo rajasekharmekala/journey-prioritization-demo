@@ -12,18 +12,6 @@ import OfferCarousel from './offercarousel';
 const viewProductPayload: XDMPayload = {
   xdm: {
     eventType: 'commerce.productViews',
-    commerce: {
-      productViews: {
-        value: 1,
-      },
-    },
-    productListItems: [
-      {
-        SKU: 'A111',
-        name: 'Shampoo',
-        quantity: 1,
-      },
-    ],
   },
 };
 
