@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { Offer } from './offer';
 import OfferCarousel from './offercarousel';
 
 const viewProductPayload: XDMPayload = {
@@ -14,66 +15,6 @@ const viewProductPayload: XDMPayload = {
     eventType: 'commerce.productViews',
   },
 };
-
-const OFFERS = [
-  {
-    id: 'bf-006',
-    title: 'Plain Notebook',
-    brand: 'PaperCo',
-    originalPrice: 4.99,
-    discountedPrice: 4.49,
-    discountPercentage: 10,
-    validUntil: '2024-11-24T23:59:59Z',
-    category: 'Office Supplies',
-    tags: ['Stationery', 'Basic'],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?q=80&w=2573&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    description:
-      'Just a regular spiral notebook with lined paper. 70 pages of basic paper.',
-    highlights: ['Save 50 cents', 'Lined paper', 'Metal spiral binding'],
-    stockStatus: {
-      available: true,
-    },
-  },
-  {
-    id: 'bf-004',
-    title: 'Basic Calculator',
-    brand: 'OfficeBasics',
-    originalPrice: 9.99,
-    discountedPrice: 8.99,
-    discountPercentage: 10,
-    validUntil: '2024-11-24T23:59:59Z',
-    category: 'Office Supplies',
-    tags: ['Calculator', 'Basic'],
-    thumbnailUrl:
-      'https://media.istockphoto.com/id/1781688768/photo/2024-on-the-calculator-screen-new-year-2024-on-the-calculator-display-with-copy-space.jpg?s=2048x2048&w=is&k=20&c=iOaU4tqlnVmnQInMSfJwlHUr2TN67Zq83a2xJOdQUTw=',
-    description:
-      'A simple solar-powered calculator for basic arithmetic. Features large buttons and an LCD display.',
-    highlights: ['Save $1', 'Solar Powered', 'Basic Math Functions'],
-    stockStatus: {
-      available: true,
-    },
-  },
-  {
-    id: 'bf-005',
-    title: 'Generic USB Cable',
-    brand: 'CableCore',
-    originalPrice: 7.99,
-    discountedPrice: 6.99,
-    discountPercentage: 12,
-    validUntil: '2024-11-24T23:59:59Z',
-    category: 'Electronics',
-    tags: ['Cable', 'USB'],
-    thumbnailUrl:
-      'https://media.istockphoto.com/id/114242778/photo/beige-usb-extender-cable-coiled-up.jpg?s=2048x2048&w=is&k=20&c=1zGNnWS0Kb6UbbNCSxTLdC3MRjE2x-8nUbPmkpbaPvw=',
-    description:
-      "Standard USB-A to USB-C cable. Nothing special about it. It's just a cable.",
-    highlights: ['Save $1', '3-foot length', 'Basic data transfer'],
-    stockStatus: {
-      available: true,
-    },
-  },
-];
 
 const personalizationPayload: XDMPayload = {
   personalization: {
@@ -112,7 +53,7 @@ export default function Page() {
   const [response, setResponse] = useState('');
   const [viewProductLoading, setViewProductLoading] = useState(false);
   const [cbeLoading, setCbeLoading] = useState(false);
-  const [offers, setOffers] = useState<any[]>(OFFERS);
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [isPersonalized, setIsPersonalized] = useState(false);
 
   useEffect(() => {
@@ -224,12 +165,13 @@ export default function Page() {
             description: meta.description,
             highlights: meta.highlights.split(','),
             available: meta.available === 'true',
+            blackFridayDeal: meta.blackFridayDeal === 'true',
           };
         })
         .filter(Boolean); // Remove any null entries
 
       if (offerItems.length === 0) {
-        setOffers(OFFERS);
+        setOffers([]);
         setIsPersonalized(false);
         sendToast(
           toast,
@@ -289,25 +231,6 @@ export default function Page() {
             {'Show My Personalized Black Friday Eve Deals'}
           </Button>
         </div>
-
-        {(isPersonalized || offers.length > 0) && (
-          <div
-            className={`
-            flex items-center justify-center gap-2 p-3 rounded-lg
-            ${
-              isPersonalized
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-gray-50 text-gray-700 border border-gray-200'
-            }
-          `}
-          >
-            <div className="text-sm font-medium">
-              {isPersonalized
-                ? '✨ Personalized Black Friday Eve deals tailored to your preferences'
-                : '📢 Preview our Black Friday Eve special offers'}
-            </div>
-          </div>
-        )}
         <OfferCarousel offers={offers} />
       </div>
     </main>

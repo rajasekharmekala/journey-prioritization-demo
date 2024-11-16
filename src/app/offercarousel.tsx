@@ -34,7 +34,16 @@ export function OfferCarousel({ offers }: OfferCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!offers || offers.length === 0) {
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-lg bg-gray-50">
+        <p className="text-xl font-medium text-gray-600 mb-2">
+          No Offers Available
+        </p>
+        <p className="text-gray-500">
+          Request your personalized Black Friday Eve offers and come back!
+        </p>
+      </div>
+    );
   }
 
   const handleNext = () => {

@@ -19,6 +19,7 @@ export interface Offer {
   stockStatus: {
     available: boolean;
   };
+  blackFridayDeal: boolean;
 }
 
 interface OfferCardProps {
@@ -28,6 +29,25 @@ interface OfferCardProps {
 export function OfferCard({ offer }: OfferCardProps) {
   return (
     <div className="rounded-lg border p-6 space-y-4">
+      {
+        <div
+          className={`
+            flex items-center justify-center gap-2 p-3 rounded-lg
+            ${
+              offer.blackFridayDeal
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-gray-50 text-gray-700 border border-gray-200'
+            }
+          `}
+        >
+          <div className="text-sm font-medium">
+            {offer.blackFridayDeal
+              ? '✨ Personalized Black Friday deal tailored to your preferences'
+              : ' Fall Promotional Deal'}
+          </div>
+        </div>
+      }
+
       <div className="relative h-64 w-full">
         <Image
           src={offer.thumbnailUrl}
