@@ -201,7 +201,573 @@ export default function Page() {
         'We are curating Black Friday Eve deals based on your preferences. Please wait a moment...'
       );
       // @ts-ignore
-      const res = await alloy('sendEvent', payload);
+      let res = await alloy('sendEvent', payload);
+
+      res = {
+        destinations: [],
+        inferences: [],
+        propositions: [
+          {
+            id: 'f1b4982d-8bf0-43d6-956d-1f840085dd1b',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: '5abc0d28-8a02-4e8e-af86-41ecf51dd915-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJmODU0MjU5NS01ZTY0LTQwNTQtOWRiNC01YmQ3OTM4ZTcyMzQiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6IjVhYmMwZDI4LThhMDItNGU4ZS1hZjg2LTQxZWNmNTFkZDkxNSIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiY2FtcGFpZ25JRCI6IjdlZGI4N2YzLWRlNmUtNDc2Yy04NzM0LWQ1Y2UxMWM4OGUzZCIsImNhbXBhaWduVmVyc2lvbklEIjoiNzYwYTM1MTYtNGU0MC00YmQyLWI3MDItNmUzYzZkYzQ1NDNmIiwiY2FtcGFpZ25BY3Rpb25JRCI6ImYzMzY2MjExLTIyZjgtNDY3Zi04ZTJlLTkzMjAxZmUzYzA4NSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiMjNlODQxZGEtYTAzMy00YzdiLWEwOWItOGUwYmZlNDk3YmNiIiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn19fQ==',
+              },
+              rank: 2,
+              activity: {
+                id: '7edb87f3-de6e-476c-8734-d5ce11c88e3d#f3366211-22f8-467f-8e2e-93201fe3c085',
+                priority: 0,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                schema:
+                  'https://ns.adobe.com/personalization/message/content-card',
+                data: {
+                  content: {
+                    actionUrl: '',
+                    body: { content: 'post card' },
+                    buttons: [],
+                    image: {
+                      alt: '',
+                      url: 'https://i.ibb.co/0X8R3TG/Messages-24.png',
+                    },
+                    dismissBtn: { style: 'none' },
+                    title: { content: 'Sample card' },
+                  },
+                  contentType: 'application/json',
+                  meta: {
+                    adobe: { template: 'SmallImage' },
+                    surface:
+                      'web://journey-prioritization-demo.vercel.app/#home',
+                  },
+                  publishedDate: 1731719015,
+                  expiryDate: 2019715200,
+                  qualifiedDate: 1731719471212,
+                },
+                id: 'fbd60586-5769-4b29-a6bb-b912ba8a1127',
+              },
+            ],
+          },
+          {
+            id: '2082d9a5-de7f-43a8-8d44-fc751a06dc84',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: 'c32f7a59-f5ab-47e9-aa70-d55aa0b8688b-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJhNjI2YWU5Ni05YTJkLTQ0OGItYjJmMC1jMDZlMDJjNjExMDYiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6ImMzMmY3YTU5LWY1YWItNDdlOS1hYTcwLWQ1NWFhMGI4Njg4YiIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiam91cm5leVZlcnNpb25JRCI6IjVkMDYxZDFjLWE1ZjMtNGNiZi1iZjJhLWExOGQwMTVmYTM0MiIsImpvdXJuZXlBY3Rpb25JRCI6IjRjN2E2ZTY0LTc3NGMtNGJjZS1hODg2LTQ0Mjg0YTMwMjc4OSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiM2Q1ZmUwNjEtOTBjNy00NzQ4LTkxMjUtYzhkMDdjZjM5Njg2IiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn0sImlzVGVzdEV4ZWN1dGlvbiI6ZmFsc2V9fQ==',
+              },
+              rank: 1,
+              activity: {
+                id: '5d061d1c-a5f3-4cbf-bf2a-a18d015fa342_4c7a6e64-774c-4bce-a886-44284a302789#b0a77dda-be90-4877-b4fa-03c90f20d78f',
+                priority: 5,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                schema:
+                  'https://ns.adobe.com/personalization/message/content-card',
+                data: {
+                  content: {
+                    actionUrl: '',
+                    body: { content: '4K Smart TV 65-inch' },
+                    buttons: [],
+                    image: {
+                      alt: '',
+                      url: 'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    },
+                    dismissBtn: { style: 'none' },
+                    title: { content: 'VisionTech' },
+                  },
+                  contentType: 'application/json',
+                  meta: {
+                    title: '4K Smart TV 65-inch',
+                    brand: 'VisionTech',
+                    originalPrice: '999.99',
+                    discountedPrice: '649.99',
+                    discountPercentage: '35',
+                    validUntil: '2024-11-24T23:59:59Z',
+                    category: 'Electronics',
+                    tags: 'TV,Smart Home,4K,Featured',
+                    thumbnailUrl:
+                      'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    description:
+                      'Immerse yourself in stunning 4K resolution with this 65-inch smart TV. Features HDR, built-in streaming apps, and voice control compatibility.',
+                    highlights:
+                      'Save $350,Free Wall Mount Kit,Free Installation',
+                    available: 'true',
+                    adobe: { template: 'SmallImage' },
+                    surface:
+                      'web://journey-prioritization-demo.vercel.app/#home',
+                  },
+                  publishedDate: 1731718328,
+                  expiryDate: 2493100800,
+                  qualifiedDate: 1731719471212,
+                },
+                id: '6df624a6-19cd-4edd-a36d-a032d0425e4d',
+              },
+            ],
+          },
+          {
+            id: 'f1b4982d-8bf0-43d6-956d-1f840085dd1b',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: '5abc0d28-8a02-4e8e-af86-41ecf51dd915-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJmODU0MjU5NS01ZTY0LTQwNTQtOWRiNC01YmQ3OTM4ZTcyMzQiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6IjVhYmMwZDI4LThhMDItNGU4ZS1hZjg2LTQxZWNmNTFkZDkxNSIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiY2FtcGFpZ25JRCI6IjdlZGI4N2YzLWRlNmUtNDc2Yy04NzM0LWQ1Y2UxMWM4OGUzZCIsImNhbXBhaWduVmVyc2lvbklEIjoiNzYwYTM1MTYtNGU0MC00YmQyLWI3MDItNmUzYzZkYzQ1NDNmIiwiY2FtcGFpZ25BY3Rpb25JRCI6ImYzMzY2MjExLTIyZjgtNDY3Zi04ZTJlLTkzMjAxZmUzYzA4NSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiMjNlODQxZGEtYTAzMy00YzdiLWEwOWItOGUwYmZlNDk3YmNiIiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn19fQ==',
+              },
+              rank: 2,
+              activity: {
+                id: '7edb87f3-de6e-476c-8734-d5ce11c88e3d#f3366211-22f8-467f-8e2e-93201fe3c085',
+                priority: 0,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                id: 'bbdbccd4-e26a-4212-b084-18d57a61891c',
+                schema: 'https://ns.adobe.com/personalization/ruleset-item',
+                data: {
+                  version: 1,
+                  rules: [
+                    {
+                      condition: {
+                        definition: {
+                          conditions: [
+                            {
+                              definition: {
+                                events: [
+                                  {
+                                    'iam.eventType': 'disqualify',
+                                    'iam.id':
+                                      '7edb87f3-de6e-476c-8734-d5ce11c88e3d#f3366211-22f8-467f-8e2e-93201fe3c085',
+                                  },
+                                ],
+                                matcher: 'eq',
+                                value: 0,
+                              },
+                              type: 'historical',
+                            },
+                            {
+                              definition: {
+                                conditions: [
+                                  {
+                                    definition: {
+                                      key: '~timestampu',
+                                      matcher: 'lt',
+                                      values: [2019715200],
+                                    },
+                                    type: 'matcher',
+                                  },
+                                ],
+                                logic: 'and',
+                              },
+                              type: 'group',
+                            },
+                          ],
+                          logic: 'and',
+                        },
+                        type: 'group',
+                      },
+                      consequences: [
+                        {
+                          id: 'fbd60586-5769-4b29-a6bb-b912ba8a1127',
+                          type: 'schema',
+                          detail: {
+                            id: 'fbd60586-5769-4b29-a6bb-b912ba8a1127',
+                            schema:
+                              'https://ns.adobe.com/personalization/message/content-card',
+                            data: {
+                              content: {
+                                actionUrl: '',
+                                body: { content: 'post card' },
+                                buttons: [],
+                                image: {
+                                  alt: '',
+                                  url: 'https://i.ibb.co/0X8R3TG/Messages-24.png',
+                                },
+                                dismissBtn: { style: 'none' },
+                                title: { content: 'Sample card' },
+                              },
+                              contentType: 'application/json',
+                              meta: {
+                                adobe: { template: 'SmallImage' },
+                                surface:
+                                  'web://journey-prioritization-demo.vercel.app/#home',
+                              },
+                              publishedDate: 1731719015,
+                              expiryDate: 2019715200,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            renderAttempted: false,
+          },
+          {
+            id: '2082d9a5-de7f-43a8-8d44-fc751a06dc84',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: 'c32f7a59-f5ab-47e9-aa70-d55aa0b8688b-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJhNjI2YWU5Ni05YTJkLTQ0OGItYjJmMC1jMDZlMDJjNjExMDYiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6ImMzMmY3YTU5LWY1YWItNDdlOS1hYTcwLWQ1NWFhMGI4Njg4YiIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiam91cm5leVZlcnNpb25JRCI6IjVkMDYxZDFjLWE1ZjMtNGNiZi1iZjJhLWExOGQwMTVmYTM0MiIsImpvdXJuZXlBY3Rpb25JRCI6IjRjN2E2ZTY0LTc3NGMtNGJjZS1hODg2LTQ0Mjg0YTMwMjc4OSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiM2Q1ZmUwNjEtOTBjNy00NzQ4LTkxMjUtYzhkMDdjZjM5Njg2IiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn0sImlzVGVzdEV4ZWN1dGlvbiI6ZmFsc2V9fQ==',
+              },
+              rank: 1,
+              activity: {
+                id: '5d061d1c-a5f3-4cbf-bf2a-a18d015fa342_4c7a6e64-774c-4bce-a886-44284a302789#b0a77dda-be90-4877-b4fa-03c90f20d78f',
+                priority: 5,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                id: '8b762952-b627-49e2-bee3-9c6a12a04aae',
+                schema: 'https://ns.adobe.com/personalization/ruleset-item',
+                data: {
+                  version: 1,
+                  rules: [
+                    {
+                      condition: {
+                        definition: {
+                          conditions: [
+                            {
+                              definition: {
+                                events: [
+                                  {
+                                    'iam.eventType': 'disqualify',
+                                    'iam.id':
+                                      '5d061d1c-a5f3-4cbf-bf2a-a18d015fa342_4c7a6e64-774c-4bce-a886-44284a302789#b0a77dda-be90-4877-b4fa-03c90f20d78f',
+                                  },
+                                ],
+                                matcher: 'eq',
+                                value: 0,
+                              },
+                              type: 'historical',
+                            },
+                            {
+                              definition: {
+                                conditions: [
+                                  {
+                                    definition: {
+                                      key: '~timestampu',
+                                      matcher: 'lt',
+                                      values: [2493100800],
+                                    },
+                                    type: 'matcher',
+                                  },
+                                ],
+                                logic: 'and',
+                              },
+                              type: 'group',
+                            },
+                          ],
+                          logic: 'and',
+                        },
+                        type: 'group',
+                      },
+                      consequences: [
+                        {
+                          id: '6df624a6-19cd-4edd-a36d-a032d0425e4d',
+                          type: 'schema',
+                          detail: {
+                            id: '6df624a6-19cd-4edd-a36d-a032d0425e4d',
+                            schema:
+                              'https://ns.adobe.com/personalization/message/content-card',
+                            data: {
+                              content: {
+                                actionUrl: '',
+                                body: { content: '4K Smart TV 65-inch' },
+                                buttons: [],
+                                image: {
+                                  alt: '',
+                                  url: 'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                },
+                                dismissBtn: { style: 'none' },
+                                title: { content: 'VisionTech' },
+                              },
+                              contentType: 'application/json',
+                              meta: {
+                                title: '4K Smart TV 65-inch',
+                                brand: 'VisionTech',
+                                originalPrice: '999.99',
+                                discountedPrice: '649.99',
+                                discountPercentage: '35',
+                                validUntil: '2024-11-24T23:59:59Z',
+                                category: 'Electronics',
+                                tags: 'TV,Smart Home,4K,Featured',
+                                thumbnailUrl:
+                                  'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                description:
+                                  'Immerse yourself in stunning 4K resolution with this 65-inch smart TV. Features HDR, built-in streaming apps, and voice control compatibility.',
+                                highlights:
+                                  'Save $350,Free Wall Mount Kit,Free Installation',
+                                available: 'true',
+                                adobe: { template: 'SmallImage' },
+                                surface:
+                                  'web://journey-prioritization-demo.vercel.app/#home',
+                              },
+                              publishedDate: 1731718328,
+                              expiryDate: 2493100800,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            renderAttempted: false,
+          },
+        ],
+        decisions: [
+          {
+            id: 'f1b4982d-8bf0-43d6-956d-1f840085dd1b',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: '5abc0d28-8a02-4e8e-af86-41ecf51dd915-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJmODU0MjU5NS01ZTY0LTQwNTQtOWRiNC01YmQ3OTM4ZTcyMzQiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6IjVhYmMwZDI4LThhMDItNGU4ZS1hZjg2LTQxZWNmNTFkZDkxNSIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiY2FtcGFpZ25JRCI6IjdlZGI4N2YzLWRlNmUtNDc2Yy04NzM0LWQ1Y2UxMWM4OGUzZCIsImNhbXBhaWduVmVyc2lvbklEIjoiNzYwYTM1MTYtNGU0MC00YmQyLWI3MDItNmUzYzZkYzQ1NDNmIiwiY2FtcGFpZ25BY3Rpb25JRCI6ImYzMzY2MjExLTIyZjgtNDY3Zi04ZTJlLTkzMjAxZmUzYzA4NSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiMjNlODQxZGEtYTAzMy00YzdiLWEwOWItOGUwYmZlNDk3YmNiIiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn19fQ==',
+              },
+              rank: 2,
+              activity: {
+                id: '7edb87f3-de6e-476c-8734-d5ce11c88e3d#f3366211-22f8-467f-8e2e-93201fe3c085',
+                priority: 0,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                id: 'bbdbccd4-e26a-4212-b084-18d57a61891c',
+                schema: 'https://ns.adobe.com/personalization/ruleset-item',
+                data: {
+                  version: 1,
+                  rules: [
+                    {
+                      condition: {
+                        definition: {
+                          conditions: [
+                            {
+                              definition: {
+                                events: [
+                                  {
+                                    'iam.eventType': 'disqualify',
+                                    'iam.id':
+                                      '7edb87f3-de6e-476c-8734-d5ce11c88e3d#f3366211-22f8-467f-8e2e-93201fe3c085',
+                                  },
+                                ],
+                                matcher: 'eq',
+                                value: 0,
+                              },
+                              type: 'historical',
+                            },
+                            {
+                              definition: {
+                                conditions: [
+                                  {
+                                    definition: {
+                                      key: '~timestampu',
+                                      matcher: 'lt',
+                                      values: [2019715200],
+                                    },
+                                    type: 'matcher',
+                                  },
+                                ],
+                                logic: 'and',
+                              },
+                              type: 'group',
+                            },
+                          ],
+                          logic: 'and',
+                        },
+                        type: 'group',
+                      },
+                      consequences: [
+                        {
+                          id: 'fbd60586-5769-4b29-a6bb-b912ba8a1127',
+                          type: 'schema',
+                          detail: {
+                            id: 'fbd60586-5769-4b29-a6bb-b912ba8a1127',
+                            schema:
+                              'https://ns.adobe.com/personalization/message/content-card',
+                            data: {
+                              content: {
+                                actionUrl: '',
+                                body: { content: 'post card' },
+                                buttons: [],
+                                image: {
+                                  alt: '',
+                                  url: 'https://i.ibb.co/0X8R3TG/Messages-24.png',
+                                },
+                                dismissBtn: { style: 'none' },
+                                title: { content: 'Sample card' },
+                              },
+                              contentType: 'application/json',
+                              meta: {
+                                adobe: { template: 'SmallImage' },
+                                surface:
+                                  'web://journey-prioritization-demo.vercel.app/#home',
+                              },
+                              publishedDate: 1731719015,
+                              expiryDate: 2019715200,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            id: '2082d9a5-de7f-43a8-8d44-fc751a06dc84',
+            scope: 'web://journey-prioritization-demo.vercel.app/#home',
+            scopeDetails: {
+              decisionProvider: 'AJO',
+              correlationID: 'c32f7a59-f5ab-47e9-aa70-d55aa0b8688b-0',
+              characteristics: {
+                eventToken:
+                  'eyJtZXNzYWdlRXhlY3V0aW9uIjp7Im1lc3NhZ2VFeGVjdXRpb25JRCI6IlVFOkluYm91bmQiLCJtZXNzYWdlSUQiOiJhNjI2YWU5Ni05YTJkLTQ0OGItYjJmMC1jMDZlMDJjNjExMDYiLCJtZXNzYWdlUHVibGljYXRpb25JRCI6ImMzMmY3YTU5LWY1YWItNDdlOS1hYTcwLWQ1NWFhMGI4Njg4YiIsIm1lc3NhZ2VUeXBlIjoibWFya2V0aW5nIiwiam91cm5leVZlcnNpb25JRCI6IjVkMDYxZDFjLWE1ZjMtNGNiZi1iZjJhLWExOGQwMTVmYTM0MiIsImpvdXJuZXlBY3Rpb25JRCI6IjRjN2E2ZTY0LTc3NGMtNGJjZS1hODg2LTQ0Mjg0YTMwMjc4OSJ9LCJtZXNzYWdlUHJvZmlsZSI6eyJtZXNzYWdlUHJvZmlsZUlEIjoiM2Q1ZmUwNjEtOTBjNy00NzQ4LTkxMjUtYzhkMDdjZjM5Njg2IiwiY2hhbm5lbCI6eyJfaWQiOiJodHRwczovL25zLmFkb2JlLmNvbS94ZG0vY2hhbm5lbHMvbWVzc2FnZUZlZWQiLCJfdHlwZSI6Imh0dHBzOi8vbnMuYWRvYmUuY29tL3hkbS9jaGFubmVsLXR5cGVzL21lc3NhZ2VGZWVkIn0sImlzVGVzdEV4ZWN1dGlvbiI6ZmFsc2V9fQ==',
+              },
+              rank: 1,
+              activity: {
+                id: '5d061d1c-a5f3-4cbf-bf2a-a18d015fa342_4c7a6e64-774c-4bce-a886-44284a302789#b0a77dda-be90-4877-b4fa-03c90f20d78f',
+                priority: 5,
+                matchedSurfaces: [
+                  'web://journey-prioritization-demo.vercel.app/#home',
+                ],
+              },
+            },
+            items: [
+              {
+                id: '8b762952-b627-49e2-bee3-9c6a12a04aae',
+                schema: 'https://ns.adobe.com/personalization/ruleset-item',
+                data: {
+                  version: 1,
+                  rules: [
+                    {
+                      condition: {
+                        definition: {
+                          conditions: [
+                            {
+                              definition: {
+                                events: [
+                                  {
+                                    'iam.eventType': 'disqualify',
+                                    'iam.id':
+                                      '5d061d1c-a5f3-4cbf-bf2a-a18d015fa342_4c7a6e64-774c-4bce-a886-44284a302789#b0a77dda-be90-4877-b4fa-03c90f20d78f',
+                                  },
+                                ],
+                                matcher: 'eq',
+                                value: 0,
+                              },
+                              type: 'historical',
+                            },
+                            {
+                              definition: {
+                                conditions: [
+                                  {
+                                    definition: {
+                                      key: '~timestampu',
+                                      matcher: 'lt',
+                                      values: [2493100800],
+                                    },
+                                    type: 'matcher',
+                                  },
+                                ],
+                                logic: 'and',
+                              },
+                              type: 'group',
+                            },
+                          ],
+                          logic: 'and',
+                        },
+                        type: 'group',
+                      },
+                      consequences: [
+                        {
+                          id: '6df624a6-19cd-4edd-a36d-a032d0425e4d',
+                          type: 'schema',
+                          detail: {
+                            id: '6df624a6-19cd-4edd-a36d-a032d0425e4d',
+                            schema:
+                              'https://ns.adobe.com/personalization/message/content-card',
+                            data: {
+                              content: {
+                                actionUrl: '',
+                                body: { content: '4K Smart TV 65-inch' },
+                                buttons: [],
+                                image: {
+                                  alt: '',
+                                  url: 'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                },
+                                dismissBtn: { style: 'none' },
+                                title: { content: 'VisionTech' },
+                              },
+                              contentType: 'application/json',
+                              meta: {
+                                title: '4K Smart TV 65-inch',
+                                brand: 'VisionTech',
+                                originalPrice: '999.99',
+                                discountedPrice: '649.99',
+                                discountPercentage: '35',
+                                validUntil: '2024-11-24T23:59:59Z',
+                                category: 'Electronics',
+                                tags: 'TV,Smart Home,4K,Featured',
+                                thumbnailUrl:
+                                  'https://plus.unsplash.com/premium_photo-1682274001252-cd39d7158ae3?q=80&w=2584&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                description:
+                                  'Immerse yourself in stunning 4K resolution with this 65-inch smart TV. Features HDR, built-in streaming apps, and voice control compatibility.',
+                                highlights:
+                                  'Save $350,Free Wall Mount Kit,Free Installation',
+                                available: 'true',
+                                adobe: { template: 'SmallImage' },
+                                surface:
+                                  'web://journey-prioritization-demo.vercel.app/#home',
+                              },
+                              publishedDate: 1731718328,
+                              expiryDate: 2493100800,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      };
 
       setResponse(JSON.stringify(res, undefined, 4));
 
@@ -216,7 +782,7 @@ export default function Page() {
             item?.data?.meta ||
             item?.data?.rules?.[0]?.consequences?.[0]?.detail?.data?.meta;
 
-          if (!meta || !meta.id) return null;
+          if (!meta || !meta.title) return null;
 
           return {
             id: meta.id,
