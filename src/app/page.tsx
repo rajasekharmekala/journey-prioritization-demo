@@ -210,7 +210,31 @@ export default function Page() {
       const offerItems = personalizationDecisions
         .map((decision: any) => decision.items)
         .flat()
-        .map((i: any) => i?.data?.content);
+        .map((item: any) => {
+          // Extract meta from either direct meta property or from rules consequences
+          const meta =
+            item?.data?.meta ||
+            item?.data?.rules?.[0]?.consequences?.[0]?.detail?.data?.meta;
+
+          if (!meta || !meta.id) return null;
+
+          return {
+            id: meta.id,
+            title: meta.title,
+            brand: meta.brand,
+            originalPrice: Number(meta.originalPrice),
+            discountedPrice: Number(meta.discountedPrice),
+            discountPercentage: Number(meta.discountPercentage),
+            validUntil: meta.validUntil,
+            category: meta.category,
+            tags: meta.tags.split(','),
+            thumbnailUrl: meta.thumbnailUrl,
+            description: meta.description,
+            highlights: meta.highlights.split(','),
+            available: meta.available === 'true',
+          };
+        })
+        .filter(Boolean); // Remove any null entries
 
       if (offerItems.length === 0) {
         setOffers(OFFERS);
