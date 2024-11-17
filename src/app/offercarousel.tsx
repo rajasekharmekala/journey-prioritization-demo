@@ -20,7 +20,7 @@
 //     }
 //   }
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
@@ -28,10 +28,16 @@ import { Offer, OfferCard } from './offer';
 
 interface OfferCarouselProps {
   offers: Offer[];
+  currentSlide: number;
+  setCurrentSlide: (slide: number) => void;
 }
 
-export function OfferCarousel({ offers }: OfferCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export function OfferCarousel({
+  offers,
+  currentSlide: currentIndex,
+  setCurrentSlide: setCurrentIndex,
+}: OfferCarouselProps) {
+  // const [currentIndex, setCurrentIndex] = useState(currentSlide);
 
   if (!offers || offers.length === 0) {
     return (
@@ -47,11 +53,11 @@ export function OfferCarousel({ offers }: OfferCarouselProps) {
   }
 
   const handleNext = () => {
-    setCurrentIndex((prev) => prev + 1);
+    setCurrentIndex(currentIndex + 1);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => prev - 1);
+    setCurrentIndex(currentIndex - 1);
   };
 
   return (

@@ -55,6 +55,7 @@ export default function Page() {
   const [cbeLoading, setCbeLoading] = useState(false);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [isPersonalized, setIsPersonalized] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     setCookieState({ email: cookies.email });
@@ -123,6 +124,8 @@ export default function Page() {
     const payload = mergePayload(personalizationPayload, cookieState.email);
     console.log('>>>>> payload:', JSON.stringify(payload, undefined, 2));
     setCbeLoading(true);
+    setCurrentSlide(0);
+
     try {
       sendToast(
         toast,
@@ -130,7 +133,16 @@ export default function Page() {
         'We are curating Black Friday Eve deals based on your preferences. Please wait a moment...'
       );
       // @ts-ignore
-      const res = await alloy('sendEvent', payload);
+      const alloyPromise = alloy('sendEvent', payload);
+      const res = await Promise.race([
+        alloyPromise,
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error('request timed out after 3 seconds')),
+            3000
+          )
+        ),
+      ]);
 
       setResponse(JSON.stringify(res, undefined, 4));
 
@@ -173,6 +185,7 @@ export default function Page() {
       if (offerItems.length === 0) {
         setOffers([]);
         setIsPersonalized(false);
+        setCurrentSlide(0);
         sendToast(
           toast,
           '',
@@ -183,6 +196,7 @@ export default function Page() {
 
       setOffers(offerItems);
       setIsPersonalized(true);
+      setCurrentSlide(0);
       sendToast(
         toast,
         'Your Personalized Black Friday Eve Offers',
@@ -202,36 +216,53 @@ export default function Page() {
             placeholder="Enter an email address to simulate authenticated session"
             value={cookieState.email || ''}
             onChange={(e) => setCookies('email', e.target.value)}
+            onConfirm={async () => {
+              await Promise.all([
+                viewProductClickHandler(),
+                personalizationClickHandler(),
+              ]);
+            }}
             className="flex-1"
           />
           {cookieState.email && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                removeCookies('email');
-                setCookieState({});
-              }}
-            >
-              Clear
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  removeCookies('email');
+                  setCookieState({});
+                }}
+              >
+                Clear
+              </Button>
+              <Button
+                onClick={async () => {
+                  await Promise.all([
+                    viewProductClickHandler(),
+                    personalizationClickHandler(),
+                  ]);
+                }}
+                disabled={viewProductLoading || !cookieState.email?.trim()}
+              >
+                {'Register'}
+              </Button>
+            </>
           )}
         </div>
 
         <div className="flex gap-4">
           <Button
-            onClick={viewProductClickHandler}
-            disabled={viewProductLoading || !cookieState.email?.trim()}
-          >
-            {'Build Personalized Black Friday Eve Offers'}
-          </Button>
-          <Button
             onClick={personalizationClickHandler}
             disabled={cbeLoading || !cookieState.email?.trim()}
           >
-            {'Show My Personalized Black Friday Eve Deals'}
+            {'Show my personalized deals'}
           </Button>
         </div>
-        <OfferCarousel offers={offers} />
+        <OfferCarousel
+          offers={offers}
+          currentSlide={currentSlide}
+          setCurrentSlide={setCurrentSlide}
+        />
       </div>
     </main>
   );

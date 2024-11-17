@@ -3,10 +3,18 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  onConfirm?: () => void;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, onChange, onConfirm, ...props }, ref) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && onConfirm) {
+        onConfirm();
+      }
+    };
+
     return (
       <input
         type={type}
@@ -15,6 +23,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className
         )}
         ref={ref}
+        onChange={onChange}
+        onKeyDown={handleKeyDown}
         {...props}
       />
     );

@@ -29,25 +29,6 @@ interface OfferCardProps {
 export function OfferCard({ offer }: OfferCardProps) {
   return (
     <div className="rounded-lg border p-6 space-y-4">
-      {
-        <div
-          className={`
-            flex items-center justify-center gap-2 p-3 rounded-lg
-            ${
-              offer.blackFridayDeal
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-gray-50 text-gray-700 border border-gray-200'
-            }
-          `}
-        >
-          <div className="text-sm font-medium">
-            {offer.blackFridayDeal
-              ? '✨ Personalized Black Friday deal tailored to your preferences'
-              : ' Fall Promotional Deal'}
-          </div>
-        </div>
-      }
-
       <div className="relative h-64 w-full">
         <Image
           src={offer.thumbnailUrl}
@@ -58,7 +39,21 @@ export function OfferCard({ offer }: OfferCardProps) {
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold">{offer.title}</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-bold">{offer.title}</h2>
+          <span
+            className={`
+            px-3 py-1 rounded-full text-sm font-medium
+            ${
+              offer.blackFridayDeal
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-gray-50 text-gray-700 border border-gray-200'
+            }
+          `}
+          >
+            {offer.blackFridayDeal ? '✨ Black Friday' : 'Promotional'}
+          </span>
+        </div>
         <p className="text-gray-600">{offer.brand}</p>
 
         <div className="flex items-center gap-2">
