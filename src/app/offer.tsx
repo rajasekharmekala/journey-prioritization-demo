@@ -51,7 +51,7 @@ export function OfferCard({ offer }: OfferCardProps) {
             }
           `}
           >
-            {offer.blackFridayDeal ? '✨ Black Friday' : 'Promotional'}
+            {offer.blackFridayDeal ? '✨ Black Friday' : 'Fall Promo'}
           </span>
         </div>
         <p className="text-gray-600">{offer.brand}</p>
